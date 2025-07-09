@@ -1,0 +1,150 @@
+# Volumes persistants pour le système de recommandation
+# Auteur: Dady Akrou Cyrille
+# Email: cyrilledady0501@gmail.com
+
+# PersistentVolume pour les données
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: data-pv
+  namespace: movie-recommendation
+  labels:
+    type: local
+    app: movie-recommendation
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data/movie-recommendation/data"
+  persistentVolumeReclaimPolicy: Retain
+
+---
+# PersistentVolumeClaim pour les données
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-pvc
+  namespace: movie-recommendation
+  labels:
+    app: movie-recommendation
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+# PersistentVolume pour les modèles
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: models-pv
+  namespace: movie-recommendation
+  labels:
+    type: local
+    app: movie-recommendation
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data/movie-recommendation/models"
+  persistentVolumeReclaimPolicy: Retain
+
+---
+# PersistentVolumeClaim pour les modèles
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: models-pvc
+  namespace: movie-recommendation
+  labels:
+    app: movie-recommendation
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+# PersistentVolume pour les logs
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: logs-pv
+  namespace: movie-recommendation
+  labels:
+    type: local
+    app: movie-recommendation
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data/movie-recommendation/logs"
+  persistentVolumeReclaimPolicy: Retain
+
+---
+# PersistentVolumeClaim pour les logs
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: logs-pvc
+  namespace: movie-recommendation
+  labels:
+    app: movie-recommendation
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+
+---
+# PersistentVolume pour Redis
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: redis-pv
+  namespace: movie-recommendation
+  labels:
+    type: local
+    app: movie-recommendation
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data/movie-recommendation/redis"
+  persistentVolumeReclaimPolicy: Retain
+
+---
+# PersistentVolumeClaim pour Redis
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-pvc
+  namespace: movie-recommendation
+  labels:
+    app: movie-recommendation
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

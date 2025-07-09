@@ -1,0 +1,17 @@
+# Namespace pour le système de recommandation de films
+# Auteur: Dady Akrou Cyrille
+# Email: cyrilledady0501@gmail.com
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: movie-recommendation
+  labels:
+    name: movie-recommendation
+    app: movie-recommendation-system
+    version: v1.0.0
+    maintainer: cyrilledady0501@gmail.com
+  annotations:
+    description: "Namespace pour le système de recommandation de films"
+    created-by: "Dady Akrou Cyrille"
+    contact: "cyrilledady0501@gmail.com"

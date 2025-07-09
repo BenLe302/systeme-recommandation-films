@@ -1,0 +1,176 @@
+# Configuration du Système de Recommandation de Films
+# Auteur: Dady Akrou Cyrille
+# Email: cyrilledady0501@gmail.com
+
+# Chemins des données
+data:
+  raw_path: "Dataset/"
+  processed_path: "data/processed/"
+  models_path: "data/models/"
+  
+  # Fichiers du dataset MovieLens
+  files:
+    ratings: "rating.csv"
+    movies: "movie.csv"
+    tags: "tag.csv"
+    genome_scores: "genome_scores.csv"
+    genome_tags: "genome_tags.csv"
+    links: "link.csv"
+
+# Paramètres de prétraitement
+preprocessing:
+  # Division des données
+  train_ratio: 0.7
+  val_ratio: 0.15
+  test_ratio: 0.15
+  
+  # Filtrage des données
+  min_ratings_per_user: 5
+  min_ratings_per_movie: 5
+  
+  # Normalisation
+  rating_scale:
+    min: 0.5
+    max: 5.0
+
+# Modèles de recommandation
+models:
+  # Filtrage Collaboratif
+  collaborative_filtering:
+    svd:
+      n_factors: 100
+      n_epochs: 20
+      lr_all: 0.005
+      reg_all: 0.02
+      random_state: 42
+    
+    nmf:
+      n_factors: 50
+      n_epochs: 50
+      random_state: 42
+    
+    knn:
+      k: 40
+      sim_options:
+        name: "cosine"
+        user_based: true
+
+  # Filtrage basé sur le contenu
+  content_based:
+    tfidf:
+      max_features: 5000
+      ngram_range: [1, 2]
+      stop_words: "english"
+    
+    similarity:
+      metric: "cosine"
+      top_k: 100
+
+  # Système hybride
+  hybrid:
+    weights:
+      collaborative: 0.7
+      content_based: 0.3
+    
+    strategy: "weighted"  # weighted, switching, mixed
+
+# Évaluation
+evaluation:
+  metrics:
+    - "rmse"
+    - "mae"
+    - "precision_at_k"
+    - "recall_at_k"
+    - "ndcg_at_k"
+  
+  k_values: [5, 10, 20]
+  
+  cross_validation:
+    n_splits: 5
+    random_state: 42
+
+# API Configuration
+api:
+  host: "0.0.0.0"
+  port: 8000
+  debug: false
+  
+  # Recommandations
+  default_n_recommendations: 10
+  max_n_recommendations: 50
+  
+  # Cache
+  cache:
+    enabled: true
+    ttl: 3600  # 1 heure
+    redis_url: "redis://localhost:6379/0"
+  
+  # Rate limiting
+  rate_limit:
+    requests_per_minute: 100
+    requests_per_hour: 1000
+
+# Interface Streamlit
+streamlit:
+  title: "🎬 Système de Recommandation de Films"
+  page_icon: "🎭"
+  layout: "wide"
+  
+  # Paramètres d'affichage
+  movies_per_page: 20
+  max_search_results: 100
+
+# Base de données
+database:
+  url: "postgresql://user:password@localhost:5432/movie_recommendations"
+  echo: false
+  pool_size: 10
+  max_overflow: 20
+
+# Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+  files:
+    app: "logs/app.log"
+    api: "logs/api.log"
+    models: "logs/models.log"
+
+# MLOps
+mlops:
+  mlflow:
+    tracking_uri: "http://localhost:5000"
+    experiment_name: "movie_recommendations"
+  
+  model_registry:
+    staging_alias: "staging"
+    production_alias: "production"
+
+# Déploiement
+deployment:
+  docker:
+    image_name: "movie-recommender"
+    tag: "latest"
+  
+  kubernetes:
+    namespace: "movie-recommendations"
+    replicas: 3
+    
+  monitoring:
+    prometheus:
+      enabled: true
+      port: 9090
+    
+    grafana:
+      enabled: true
+      port: 3000
+
+# Sécurité
+security:
+  secret_key: "your-secret-key-here"
+  algorithm: "HS256"
+  access_token_expire_minutes: 30
+
+# Environnement
+environment: "development"  # development, staging, production
